@@ -1,6 +1,7 @@
 # Trabalho A0 — Reproduzir Figura com p5.js
 
 Atividade da disciplina de Matemática e Física para Jogos de SMD - UFC
+Docente: Gilvan Maia
 
 ## Objetivo
 Reproduzir a figura apresentada em aula introdutória sobre vetores: um plano
