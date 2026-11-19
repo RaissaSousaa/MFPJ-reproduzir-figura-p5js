@@ -1,0 +1,104 @@
+//nome: Raissa Costa Sousa - 569762
+
+const ESCALA = 90;   //tamanho dos coisa dos pixels
+//pontos A e B
+const A = { x: 1, y: 3 };   
+const B = { x: 4, y: 1 };   
+
+function setup() {
+  createCanvas(560, 460);
+  noLoop();   
+}
+
+function draw() {
+  fundoCart();//
+
+  drawGrade(5, 4);// grade x ate y
+  drawEixos(5, 4);// eixos (com seta) e os numeros
+
+  // vetor v, A-B 
+  colore(230, 100, 160);//rosa
+  strokeWeight(0.9); //tipo grossura do traco
+  seta(A.x * ESCALA, A.y * ESCALA, B.x * ESCALA, B.y * ESCALA);
+  colore(160, 30, 90);//rosa mais escuro
+  textSize(20);
+  texto("V", (A.x + B.x) / 2 * ESCALA + 8.7, (A.y + B.y) / 2 * ESCALA + 8);
+
+  //ontos A e B com a posicao
+  drawPonto(A.x, A.y, "A", -26, 5);
+  drawPonto(B.x, B.y, "B",  11, 8);
+}
+
+
+function fundoCart() { //fundo branco com origem no canto e eixo Y para cima pq eh investido na tela
+  background(255);
+  translate(70, 400);   //origem canto inferior esquerdo
+  scale(1, -1);         // inverte o y
+}
+
+function drawGrade(xMax, yMax) {
+  colore(200);          // cinza-claro (preenchimento e contorno iguais)
+  strokeWeight(1.1);
+  for (let x = 1; x <= xMax; x++) { //verticais
+    line(x * ESCALA, 0, x * ESCALA, yMax * ESCALA);
+  }
+  for (let y = 1; y <= yMax; y++) {//horizontais
+    line(0, y * ESCALA, xMax * ESCALA, y * ESCALA);
+  }
+}
+function drawEixos(tamX, tamY) {
+  colore(160, 30, 90);
+  strokeWeight(0.9);
+  seta(0, 0, tamX * ESCALA, 0);
+  seta(0, 0, 0, tamY * ESCALA);
+
+  //posicao "x" e do "y" no desenho 
+  textSize(14); 
+  texto("x", tamX * ESCALA + 8, -5);//n ficar espelhado
+  texto("y", -12, tamY * ESCALA - 6);
+
+  //=posicao num eixos
+  textSize(13);
+  for (let x = 1; x <= tamX; x++) texto(x, x * ESCALA - 4, -18);
+  for (let y = 1; y <= tamY; y++) texto(y, -20, y * ESCALA - 5);
+}
+
+function drawPonto(x, y, rotulo, dx, dy) {
+  colore(230, 100, 160);               
+  circle(x * ESCALA, y * ESCALA, 14);
+
+  colore(160, 30, 90);  
+  textSize(18);
+  texto(rotulo, x * ESCALA + dx, y * ESCALA + dy);
+}
+
+function seta(x1, y1, x2, y2) {
+  line(x1, y1, x2, y2);
+  var dx = x2 - x1, dy = y2 - y1;
+  var le = sqrt(dx * dx + dy * dy);// comprimento do vetor
+  if (le === 0) return;//eta de tamanho zero
+  var vx = dx / le, vy = dy / le;// unitario paralelo ao segmento
+  var ux = -vy, uy = vx; //unitario perpendicular
+  var c = 25, l = 4.7; //a ponta comprimento e meia-largura
+  triangle(x2, y2,
+           x2 - c * vx + l * ux, y2 - c * vy + l * uy,
+           x2 - c * vx - l * ux, y2 - c * vy - l * uy);
+}
+
+//preenchimento e contorno com a mesma cor
+function colore(c1, c2, c3, c4) {
+  if (c4 != null) {fill(c1, c2, c3, c4); stroke(c1, c2, c3, c4); return; }
+  if (c3 != null) {fill(c1, c2, c3);stroke(c1, c2, c3);     return;}
+  if (c2 == null) {fill(c1);stroke(c1);}
+  else            {fill(c1, c1, c1, c2); stroke(c1, c1, c1, c2);}
+}
+
+//pra desinverter o texto
+function texto(str, x, y) {
+  push();
+    translate(x, y);
+    scale(1, -1);
+    translate(-x, -y);
+    text(str, x, y);
+  pop();
+}
